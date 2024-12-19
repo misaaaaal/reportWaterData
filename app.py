@@ -10,20 +10,20 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-load_dotenv()
-redis_host = os.getenv('REDIS_HOST')
-redis_conn_str = os.getenv('REDIS_CONNECTION_STRING')
-redis_client=redis.Redis(host=redis_host, port=6380, password=redis_conn_str, ssl=True)
+# load_dotenv()
+# redis_host = os.getenv('REDIS_HOST')
+# redis_conn_str = os.getenv('REDIS_CONNECTION_STRING')
+# redis_client=redis.Redis(host=redis_host, port=6380, password=redis_conn_str, ssl=True)
 
 # Connect to Azure SQL Database
 def get_data_from_sql():
-    try:
-        cached_data = redis_client.get('water_quality_data')
-        if cached_data:
-            print("Fetching data from cache...")
-            return pd.DataFrame(json.loads(cached_data))
-    except Exception as e:
-        print(f"Error accessing cache: {e}")
+    # try:
+    #     cached_data = redis_client.get('water_quality_data')
+    #     if cached_data:
+    #         print("Fetching data from cache...")
+    #         return pd.DataFrame(json.loads(cached_data))
+    # except Exception as e:
+    #     print(f"Error accessing cache: {e}")
 
     conn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};'
                           'SERVER=team-5-server.database.windows.net;'
@@ -34,7 +34,7 @@ def get_data_from_sql():
     data = pd.read_sql(query, conn)
     conn.close()
 
-    redis_client.set('water_quality_data', data.to_json(orient='records'), ex=3600)
+    # redis_client.set('water_quality_data', data.to_json(orient='records'), ex=3600)
     return data
 
 @app.route('/')
