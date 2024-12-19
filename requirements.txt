@@ -2,3 +2,5 @@ flask
 pyodbc
 plotly
 pandas
+redis
+dotenv
