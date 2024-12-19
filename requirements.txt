@@ -3,4 +3,4 @@ pyodbc
 plotly
 pandas
 redis
-dotenv
+python-dotenv
