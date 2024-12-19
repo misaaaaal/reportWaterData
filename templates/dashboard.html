@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .charts {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .chart {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Water Quality Dashboard</h1>
+        <h2>Summary</h2>
+        <p>Safe Locations: {{ safe_count }}</p>
+        <p>Unsafe Locations: {{ unsafe_count }}</p>
+        <h2>Visualizations</h2>
+        <h3>1. pH Levels Over Time</h3>
+        {{ graph1|safe }}
+        
+        <h3>2. Unsafe Water Quality Incidents by City</h3>
+        {{ graph2|safe }}
+        
+        <h3>3. Turbidity Levels Over Time</h3>
+        {{ graph3|safe }}
+    </div>
+</body>
+</html>
