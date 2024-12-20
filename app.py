@@ -35,12 +35,11 @@ def get_data_from_sql():
     data = pd.read_sql(query, conn)
     conn.close()
 
-    redis_client.set('water_quality_data', data.to_json(orient='records'), ex=3600)
+    redis_client.set('water_quality_data', data.to_json(orient='records'), ex=600)
     return data
 
 @app.route('/')
 def dashboard():
-    # Get the data from SQL
     data = get_data_from_sql()
 
     # Convert "Date Time" to datetime format
@@ -55,13 +54,8 @@ def dashboard():
     
     unsafe_data = data[data['Quality'] == 'Unsafe']
 
-    safe_count = len(data[data['Quality'] == 'Safe'])
-    unsafe_count = len(unsafe_data)
-
     unsafe_summary = unsafe_data.groupby('City').size().reset_index(name='Unsafe Count')
 
-
-    # Create charts using Plotly
     fig1 = px.line(data, x='Date_Time', y='pH', color='City',
                    title='pH Levels Over Time',
                    labels={'Date Time': 'Date', 'pH': 'pH Level'})
@@ -108,10 +102,8 @@ def dashboard():
     graph3 = pio.to_html(fig3, full_html=False)
     graph4 = pio.to_html(fig4, full_html=False)
 
-    # Pass insights and graphs to the template
     return render_template('dashboard.html', 
-                           graph1=graph1, graph2=graph2, graph3=graph3, graph4=graph4,
-                           safe_count=safe_count, unsafe_count=unsafe_count)
+                           graph1=graph1, graph2=graph2, graph3=graph3, graph4=graph4)
 
 if __name__ == '__main__':
     app.run(debug=True)
